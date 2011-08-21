@@ -14,7 +14,7 @@ Source0:	http://pecl.php.net/get/%{modname}-%{version}.tgz
 Source1:	%{modname}.ini
 BuildRequires:	php-devel >= 3:5.2.1
 BuildRequires:	dos2unix
-BuildRequires:	libdrizzle-devel
+BuildRequires:	drizzle1-client-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -37,9 +37,12 @@ find -type f | grep -v ".gif" | grep -v ".png" | grep -v ".jpg" | xargs dos2unix
 # lib64 fix
 perl -pi -e "s|/lib\b|/%{_lib}|g" config.m4
 
+perl -pi -e "s|include/libdrizzle|include/libdrizzle-1.0/libdrizzle|g" config.m4
+
 %build
 %serverbuild
 
+export CPPFLAGS="-I%{_includedir}/libdrizzle-1.0"
 phpize
 %configure2_5x --with-libdir=%{_lib} \
     --enable-%{modname}=shared,%{_prefix} \
