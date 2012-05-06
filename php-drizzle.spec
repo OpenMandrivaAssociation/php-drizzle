@@ -12,6 +12,7 @@ License:	PHP License
 URL:		http://pecl.php.net/package/drizzle
 Source0:	http://pecl.php.net/get/%{modname}-%{version}.tgz
 Source1:	%{modname}.ini
+Patch0:		drizzle-0.4.2-php54x.diff
 BuildRequires:	php-devel >= 3:5.2.1
 BuildRequires:	dos2unix
 BuildRequires:	drizzle1-client-devel
@@ -25,6 +26,8 @@ drizzle and mysql databases.
 
 %setup -q -n %{modname}-%{version}
 [ "../package.xml" != "/" ] && mv ../package.xml .
+
+%patch0 -p1
 
 cp %{SOURCE1} %{inifile}
 
