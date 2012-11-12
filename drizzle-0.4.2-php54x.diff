@@ -1,0 +1,160 @@
+diff -Naurp drizzle-0.4.2/config.m4 drizzle-0.4.2.oden/config.m4
+--- drizzle-0.4.2/config.m4	1970-01-01 10:13:08.000000000 +0100
++++ drizzle-0.4.2.oden/config.m4	2012-05-06 13:40:56.624637467 +0200
+@@ -20,6 +20,11 @@ if test "$PHP_DRIZZLE" != "no"; then
+       DRIZZLE_INC_DIR=$i/include
+       AC_MSG_RESULT(found in $i)
+       break
++    elif test -r $i/include/libdrizzle-1.0/libdrizzle/drizzle.h; then
++      DRIZZLE_LIB_DIR=$i/lib
++      DRIZZLE_INC_DIR=$i/include/libdrizzle-1.0
++      AC_MSG_RESULT(found in $i)
++      break
+     fi
+   done
+ 
+diff -Naurp drizzle-0.4.2/php_drizzle.c drizzle-0.4.2.oden/php_drizzle.c
+--- drizzle-0.4.2/php_drizzle.c	1970-01-01 10:13:08.000000000 +0100
++++ drizzle-0.4.2.oden/php_drizzle.c	2012-05-06 13:40:13.649354469 +0200
+@@ -1304,8 +1304,9 @@ drizzle_obj_new_ex(zend_class_entry *cla
+                    drizzle_obj **drizzle_ptr TSRMLS_DC) {
+ 	drizzle_obj *obj;
+ 	zend_object_value value;
++#if PHP_VERSION_ID < 50399
+ 	zval *tmp;
+-
++#endif
+ 	obj= emalloc(sizeof(drizzle_obj));
+ 	memset(obj, 0, sizeof(drizzle_obj));
+ 
+@@ -1314,9 +1315,13 @@ drizzle_obj_new_ex(zend_class_entry *cla
+ 	}
+ 
+ 	zend_object_std_init(&(obj->std), class_type TSRMLS_CC);
++#if PHP_VERSION_ID < 50399
+ 	zend_hash_copy(obj->std.properties, &(class_type->default_properties),
+ 	              (copy_ctor_func_t)zval_add_ref, (void *)(&tmp),
+ 	               sizeof(zval *));
++#else
++        object_properties_init(&obj->std, class_type);
++#endif
+ 
+ 	value.handle= zend_objects_store_put(obj,
+ 	                   (zend_objects_store_dtor_t)zend_objects_destroy_object,
+@@ -1572,7 +1577,9 @@ static inline zend_object_value
+ drizzle_con_obj_new_ex(zend_class_entry *class_type,
+                        drizzle_con_obj **con_ptr TSRMLS_DC) {
+ 	drizzle_con_obj *obj;
++#if PHP_VERSION_ID < 50399
+ 	zval *tmp;
++#endif
+ 
+ 	obj= emalloc(sizeof(drizzle_con_obj));
+ 	memset(obj, 0, sizeof(drizzle_con_obj));
+@@ -1582,9 +1589,14 @@ drizzle_con_obj_new_ex(zend_class_entry
+ 	}
+ 
+ 	zend_object_std_init(&(obj->std), class_type TSRMLS_CC);
++
++#if PHP_VERSION_ID < 50399
+ 	zend_hash_copy(obj->std.properties, &(class_type->default_properties),
+ 	               (copy_ctor_func_t)zval_add_ref, (void *)(&tmp),
+ 	               sizeof(zval *));
++#else
++        object_properties_init(&obj->std, class_type);
++#endif
+ 
+ 	obj->value.handle= zend_objects_store_put(obj,
+ 	                  (zend_objects_store_dtor_t)zend_objects_destroy_object,
+@@ -2495,7 +2507,9 @@ static inline zend_object_value
+ drizzle_query_obj_new_ex(zend_class_entry *class_type,
+                           drizzle_query_obj **query_ptr TSRMLS_DC) {
+ 	drizzle_query_obj *obj;
++#if PHP_VERSION_ID < 50399
+ 	zval *tmp;
++#endif
+ 
+ 	obj= emalloc(sizeof(drizzle_query_obj));
+ 	memset(obj, 0, sizeof(drizzle_query_obj));
+@@ -2505,9 +2519,13 @@ drizzle_query_obj_new_ex(zend_class_entr
+ 	}
+ 
+ 	zend_object_std_init(&(obj->std), class_type TSRMLS_CC);
++#if PHP_VERSION_ID < 50399
+ 	zend_hash_copy(obj->std.properties, &(class_type->default_properties),
+ 	               (copy_ctor_func_t)zval_add_ref, (void *)(&tmp),
+ 	               sizeof(zval *));
++#else
++        object_properties_init(&obj->std, class_type);
++#endif
+ 
+ 	obj->value.handle= zend_objects_store_put(obj,
+ 	               (zend_objects_store_dtor_t)zend_objects_destroy_object,
+@@ -3007,7 +3025,9 @@ drizzle_result_obj_new_ex(zend_class_ent
+                           drizzle_result_obj **result_ptr TSRMLS_DC) {
+ 	drizzle_result_obj *result;
+ 	zend_object_value value;
++#if PHP_VERSION_ID < 50399
+ 	zval *tmp;
++#endif
+ 
+ 	result= emalloc(sizeof(drizzle_result_obj));
+ 	memset(result, 0, sizeof(drizzle_result_obj));
+@@ -3017,9 +3037,13 @@ drizzle_result_obj_new_ex(zend_class_ent
+ 	}
+ 
+ 	zend_object_std_init(&(result->std), class_type TSRMLS_CC);
++#if PHP_VERSION_ID < 50399
+ 	zend_hash_copy(result->std.properties, &(class_type->default_properties),
+ 	               (copy_ctor_func_t)zval_add_ref, (void *)(&tmp),
+ 	               sizeof(zval *));
++#else
++        object_properties_init(&result->std, class_type);
++#endif
+ 
+ 	value.handle= zend_objects_store_put(result,
+ 	              (zend_objects_store_dtor_t)zend_objects_destroy_object,
+@@ -3372,7 +3396,9 @@ drizzle_column_obj_new_ex(zend_class_ent
+                           drizzle_column_obj **column_ptr TSRMLS_DC) {
+ 	drizzle_column_obj *obj;
+ 	zend_object_value value;
++#if PHP_VERSION_ID < 50399
+ 	zval *tmp;
++#endif
+ 
+ 	obj= emalloc(sizeof(drizzle_column_obj));
+ 	memset(obj, 0, sizeof(drizzle_column_obj));
+@@ -3382,9 +3408,13 @@ drizzle_column_obj_new_ex(zend_class_ent
+ 	}
+ 
+ 	zend_object_std_init(&(obj->std), class_type TSRMLS_CC);
++#if PHP_VERSION_ID < 50399
+ 	zend_hash_copy(obj->std.properties, &(class_type->default_properties),
+ 	               (copy_ctor_func_t)zval_add_ref, (void *)(&tmp),
+ 	               sizeof(zval *));
++#else
++        object_properties_init(&obj->std, class_type);
++#endif
+ 
+ 	value.handle= zend_objects_store_put(obj,
+ 	             (zend_objects_store_dtor_t)zend_objects_destroy_object,
+@@ -4492,9 +4522,6 @@ PHP_MINIT_FUNCTION(drizzle) {
+   REGISTER_LONG_CONSTANT("DRIZZLE_CAPABILITIES_PROTOCOL_41",
+                          DRIZZLE_CAPABILITIES_PROTOCOL_41,
+                          CONST_CS | CONST_PERSISTENT);
+-  REGISTER_LONG_CONSTANT("DRIZZLE_CAPABILITIES_REMEMBER_OPTIONS",
+-                         DRIZZLE_CAPABILITIES_REMEMBER_OPTIONS,
+-                         CONST_CS | CONST_PERSISTENT);
+   REGISTER_LONG_CONSTANT("DRIZZLE_CAPABILITIES_RESERVED",
+                          DRIZZLE_CAPABILITIES_RESERVED,
+                          CONST_CS | CONST_PERSISTENT);
+@@ -4504,9 +4531,6 @@ PHP_MINIT_FUNCTION(drizzle) {
+   REGISTER_LONG_CONSTANT("DRIZZLE_CAPABILITIES_SSL",
+                          DRIZZLE_CAPABILITIES_SSL,
+                          CONST_CS | CONST_PERSISTENT);
+-  REGISTER_LONG_CONSTANT("DRIZZLE_CAPABILITIES_SSL_VERIFY_SERVER_CERT",
+-                         DRIZZLE_CAPABILITIES_SSL_VERIFY_SERVER_CERT,
+-                         CONST_CS | CONST_PERSISTENT);
+   REGISTER_LONG_CONSTANT("DRIZZLE_CAPABILITIES_TRANSACTIONS",
+                          DRIZZLE_CAPABILITIES_TRANSACTIONS,
+                          CONST_CS | CONST_PERSISTENT);
