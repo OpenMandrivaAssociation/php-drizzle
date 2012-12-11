@@ -83,3 +83,66 @@ rm -rf %{buildroot}
 %config(noreplace) %attr(0644,root,root) %{_sysconfdir}/php.d/%{inifile}
 %attr(0755,root,root) %{_libdir}/php/extensions/%{soname}
 
+
+
+%changelog
+* Sun May 06 2012 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-10mdv2012.0
++ Revision: 797108
+- fix build (upstream)
+- rebuild for php-5.4.x
+
+* Sun Jan 15 2012 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-9
++ Revision: 761218
+- rebuild
+
+* Wed Aug 24 2011 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-8
++ Revision: 696411
+- rebuilt for php-5.3.8
+
+* Sun Aug 21 2011 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-7
++ Revision: 695985
+- fix build
+- rebuilt for php-5.3.7
+
+* Sat Mar 19 2011 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-6
++ Revision: 646627
+- rebuilt for php-5.3.6
+
+* Sat Jan 08 2011 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-5mdv2011.0
++ Revision: 629782
+- rebuilt for php-5.3.5
+
+* Mon Jan 03 2011 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-4mdv2011.0
++ Revision: 628093
+- ensure it's built without automake1.7
+
+* Wed Nov 24 2010 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-3mdv2011.0
++ Revision: 600476
+- rebuild
+
+* Sun Oct 24 2010 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-2mdv2011.0
++ Revision: 588758
+- rebuild
+
+* Sun Apr 04 2010 Oden Eriksson <oeriksson@mandriva.com> 0.4.2-1mdv2010.1
++ Revision: 531309
+- 0.4.2
+- rebuilt for php-5.3.2
+- rebuilt for php-5.3.2RC1
+
+* Sat Nov 21 2009 Oden Eriksson <oeriksson@mandriva.com> 0.4.1-3mdv2010.1
++ Revision: 468158
+- rebuilt against php-5.3.1
+
+* Wed Sep 30 2009 Oden Eriksson <oeriksson@mandriva.com> 0.4.1-2mdv2010.0
++ Revision: 451263
+- rebuild
+
+* Wed Jul 08 2009 Oden Eriksson <oeriksson@mandriva.com> 0.4.1-1mdv2010.0
++ Revision: 393465
+- P0: fix build with -Werror=format-security (from upstream cvs)
+- import php-drizzle
+
+
+* Sun Jul 05 2009 Oden Eriksson <oeriksson@mandriva.org> 0.4.1-1mdv2009.0
+- initial Mandriva package
