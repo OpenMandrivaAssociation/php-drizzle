@@ -9,7 +9,7 @@ Version:	0.4.2
 Release:	%mkrel 10
 Group:		Development/PHP
 License:	PHP License
-URL:		http://pecl.php.net/package/drizzle
+URL:		https://pecl.php.net/package/drizzle
 Source0:	http://pecl.php.net/get/%{modname}-%{version}.tgz
 Source1:	%{modname}.ini
 Patch0:		drizzle-0.4.2-php54x.diff
