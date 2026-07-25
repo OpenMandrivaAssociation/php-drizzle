@@ -6,7 +6,7 @@
 Summary:	Drizzle Database API for PHP
 Name:		php-%{modname}
 Version:	0.4.2
-Release:	%mkrel 10
+Release:	11
 Group:		Development/PHP
 License:	PHP License
 URL:		https://pecl.php.net/package/drizzle
